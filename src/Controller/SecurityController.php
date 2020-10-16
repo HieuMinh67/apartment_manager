@@ -14,18 +14,27 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-         if ($this->getUser()) {
-             if ($this->getUser()->getRoles() === 'ROLE_ADMIN') {
-                 return $this->redirectToRoute('/admin');
-             }
-         }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('admin');
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+//        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('security/login.html.twig', [//@EasyAdmin/page/login.html.twig
+            'error' => $error,
+            'last_username' => $lastUsername,
+            'csrf_token_intention' => 'authenticate',
+            'target_path' => $this->generateUrl('admin'),
+            'username_label' => 'Enter your ID number',
+            'password_label' => 'Enter your password',
+            'sign_in_label' => 'Login',
+            'username_parameter' => 'username',
+            'password_parameter' => 'password',
+        ]);
     }
 
     /**
@@ -33,6 +42,7 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        return $this->redirectToRoute("app_login");
+        // throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }

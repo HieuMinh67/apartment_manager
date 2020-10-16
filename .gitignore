@@ -50,6 +50,11 @@
 
 # Embedded web-server pid file
 /.web-server-pid
+.env
 
 # PHP Storm auto generate
 .idea
+
+migrations
+
+public/
