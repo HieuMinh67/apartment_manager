@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CitizenRepository;
 use Doctrine\ORM\Mapping as ORM;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 /**
  * @ORM\Entity(repositoryClass=CitizenRepository::class)
@@ -41,6 +42,11 @@ class Citizen
      * @ORM\Column(type="smallint")
      */
     private $gender;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Apartment::class, mappedBy="citizenId", cascade={"persist", "remove"})
+     */
+    private $apartmentId;
 
     public function getId(): ?int
     {
@@ -103,6 +109,24 @@ class Citizen
     public function setGender(int $gender): self
     {
         $this->gender = $gender;
+
+        return $this;
+    }
+
+    public function getApartmentId(): ?Apartment
+    {
+        return $this->apartmentId;
+    }
+
+    public function setApartmentId(?Apartment $apartmentId): self
+    {
+        $this->apartmentId = $apartmentId;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newCitizenId = null === $apartmentId ? null : $this;
+        if ($apartmentId->getCitizenId() !== $newCitizenId) {
+            $apartmentId->setCitizenId($newCitizenId);
+        }
 
         return $this;
     }
