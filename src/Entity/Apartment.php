@@ -37,6 +37,12 @@ class Apartment
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Building::class, inversedBy="apartment")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $building;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +92,18 @@ class Apartment
     public function setStatus(bool $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getBuilding(): ?Building
+    {
+        return $this->building;
+    }
+
+    public function setBuilding(?Building $building): self
+    {
+        $this->building = $building;
 
         return $this;
     }

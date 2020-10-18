@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BuildingRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,16 @@ class Building
      * @ORM\Column(type="string", length=255)
      */
     private $address;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Apartment::class, mappedBy="building", orphanRemoval=true)
+     */
+    private $apartment;
+
+    public function __construct()
+    {
+        $this->apartment = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +81,37 @@ class Building
     public function setAddress(string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Apartment[]
+     */
+    public function getApartment(): Collection
+    {
+        return $this->apartment;
+    }
+
+    public function addApartment(Apartment $apartment): self
+    {
+        if (!$this->apartment->contains($apartment)) {
+            $this->apartment[] = $apartment;
+            $apartment->setBuilding($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApartment(Apartment $apartment): self
+    {
+        if ($this->apartment->contains($apartment)) {
+            $this->apartment->removeElement($apartment);
+            // set the owning side to null (unless already changed)
+            if ($apartment->getBuilding() === $this) {
+                $apartment->setBuilding(null);
+            }
+        }
 
         return $this;
     }
