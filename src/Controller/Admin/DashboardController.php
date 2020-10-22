@@ -19,15 +19,18 @@ class DashboardController extends AbstractDashboardController
      */
     public function index(): Response
     {
-        $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
-
-        return $this->redirect($routeBuilder->setController(ApartmentCrudController::class)->generateUrl());
+//        $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
+//
+//        return $this->redirect($routeBuilder->setController(ApartmentCrudController::class)->generateUrl());
+//        return parent::index();
+        return $this->render('bundles/EasyAdminBundle/page/dashboard.html.twig');
     }
 
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Apartment Manager');
+            ->setTitle('Apartment Manager')
+            ->setFaviconPath('images/favicon.jpg');
     }
 
     public function configureMenuItems(): iterable
@@ -37,6 +40,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('List employee', 'fa fa-user', User::class);
         yield MenuItem::section("Citizen");
         yield MenuItem::linkToCrud('List citizen', 'fa fa-user', Citizen::class);
+        yield MenuItem::linkToCrud('Add citizen', 'fa fa-plus', Citizen::class)->setAction('new');
         yield MenuItem::section("Apartment");
         yield MenuItem::linkToCrud('List apartment', 'fa fa-home', Apartment::class);
     }
