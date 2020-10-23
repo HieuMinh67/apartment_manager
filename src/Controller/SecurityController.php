@@ -27,6 +27,7 @@ class SecurityController extends AbstractController
         return $this->render('@EasyAdmin/page/login.html.twig', [//security/login.html.twig
             'error' => $error,
             'last_username' => $lastUsername,
+            'page_title' => "NOVALAND",
             'csrf_token_intention' => 'authenticate',
             'target_path' => $this->generateUrl('admin'),
             'username_label' => 'Enter your ID number',

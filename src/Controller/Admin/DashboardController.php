@@ -29,7 +29,7 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Apartment Manager')
+            ->setTitle('<img class="w-25" src="images/long_logo.png">')
             ->setFaviconPath('images/favicon.jpg');
     }
 
