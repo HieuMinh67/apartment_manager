@@ -48,6 +48,11 @@ class Citizen
      */
     private $apartmentId;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $email;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -133,5 +138,17 @@ class Citizen
 
     public function __toString() {
         return $this->getFirstName().' '.$this->getLastName();
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }
