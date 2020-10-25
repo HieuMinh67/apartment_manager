@@ -8,8 +8,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CitizenCrudController extends AbstractCrudController
 {
@@ -25,13 +27,21 @@ class CitizenCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        return [
+        $imgFile = ImageField::new('thumbnailFile')->setFormType(VichImageType::class)->setLabel('Avatar');
+        $imgName = ImageField::new('thumbnail')->setBasePath('/images/citizen/')->setLabel('Avatar');
+        $fields = [
             TextField::new('firstName'),
             TextField::new('lastName'),
             TelephoneField::new('phone'),
-            DateField::new('dateOfBirth')->addCssClass('w-100'),
+            DateField::new('dateOfBirth'),
             ChoiceField::new('gender')->setChoices(['Male' => 0, 'Female' => 1, 'Other' => 2]),
-            AssociationField::new('apartmentId')->autocomplete()
+            AssociationField::new('apartmentId')->autocomplete(),
         ];
+        if ($pageName == Crud::PAGE_INDEX || $pageName == Crud::PAGE_DETAIL) {
+            $fields[] = $imgName;
+        } else {
+            $fields[] = $imgFile;
+        }
+        return $fields;
     }
 }
