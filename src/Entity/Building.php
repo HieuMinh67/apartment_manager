@@ -39,6 +39,11 @@ class Building
      */
     private $apartment;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Quotation::class, inversedBy="building")
+     */
+    private $quotation;
+
     public function __construct()
     {
         $this->apartment = new ArrayCollection();
@@ -112,6 +117,18 @@ class Building
                 $apartment->setBuilding(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuotation(): ?Quotation
+    {
+        return $this->quotation;
+    }
+
+    public function setQuotation(?Quotation $quotation): self
+    {
+        $this->quotation = $quotation;
 
         return $this;
     }
