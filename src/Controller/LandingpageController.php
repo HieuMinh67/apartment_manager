@@ -42,7 +42,7 @@ class LandingpageController extends AbstractController
      * @Route("contact", name="contact")
      */
     public function contact(): Response {
-        return $this->render("LandingPage/contact.html");
+        return $this->render("LandingPage/contact.html.twig");
     }
 
     /**
@@ -57,5 +57,12 @@ class LandingpageController extends AbstractController
      */
     public function project(): Response {
         return $this->render("LandingPage/projects.html");
+    }
+
+    /**
+     * @Route("blog", name="blog")
+     */
+    public function blog(): Response {
+        return $this->render("LandingPage/blog-home.html.twig");
     }
 }

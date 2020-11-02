@@ -1,0 +1,19 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+
+{% block user_menu %}
+    {% if ea.userMenu.items|length > 0 %}
+        <div class="popover-content-section user-menu">
+            <a href="{{ path('change_password') }}" class="user-action " target="_self" rel="">
+                <i class="fa fa-fw fa-key"></i> <span>Change Password</span>
+            </a>
+            {% for item in ea.userMenu.items %}
+                <a href="{{ item.linkUrl }}" class="user-action {{ item.cssClass }}" target="{{ item.linkTarget }}"
+                   rel="{{ item.linkRel }}" referrerpolicy="origin-when-cross-origin">
+                    {% if item.icon is not empty %}<i class="fa fa-fw {{ item.icon }}"></i>{% endif %}
+                    <span>{{ item.label }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock user_menu %}

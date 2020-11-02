@@ -64,4 +64,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
     */
+    public function countEmployee(): int {
+        $query = $this->createQueryBuilder('u')
+            ->select('count(u.id) as numberOfEmployee')
+            ->getQuery()
+            ->getSingleScalarResult();
+        return intval($query);
+    }
 }

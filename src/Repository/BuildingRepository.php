@@ -47,4 +47,10 @@ class BuildingRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function countBuildings(): int {
+        return $this->createQueryBuilder('b')
+            ->select('count(b.id) as count')
+            ->getQuery()
+            ->getSingleResult()['count'];
+    }
 }

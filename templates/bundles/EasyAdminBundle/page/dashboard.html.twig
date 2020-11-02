@@ -1,4 +1,18 @@
 {% extends '@!EasyAdmin/page/content.html.twig' %}
-{% block page_actions %}
-Hello World!!
+{% block page_content %}
+    <div class="form-group">
+        <form method="post" action="{{ path('change_password') }}">
+            <input type="hidden" name="_method" value="POST">
+            <div class="input-group mb-4">
+                <input type="password" class="form-control">
+            </div>
+            <div class="input-group mb-4">
+                <input type="password" class="form-control">
+            </div>
+            <div class="input-group mb-4">
+                <input type="password" class="form-control">
+            </div>
+            <button class="btn float-right">Save</button>
+        </form>
+    </div>
 {% endblock %}

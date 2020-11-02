@@ -47,4 +47,11 @@ class CitizenRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function countCitizen(): int {
+        return $this->createQueryBuilder("c")
+            ->select('count(c) as count')
+            ->getQuery()
+            ->getSingleResult()['count'];
+    }
 }
