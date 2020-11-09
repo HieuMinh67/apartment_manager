@@ -13,6 +13,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 class Citizen
 {
+    public static $genderChoices = ['Male' => 0, 'Female' => 1, 'Other' => 2];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -205,7 +207,7 @@ class Citizen
     }
 
     public function __toString() {
-        return $this->getFirstName().' '.$this->getLastName();
+        return $this->getFirstName().' '.$this->getLastName(). ' - ' .$this->getPhone();
     }
 
     public function getEmail(): ?string

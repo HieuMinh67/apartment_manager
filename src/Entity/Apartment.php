@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ApartmentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\False_;
 
 /**
  * @ORM\Entity(repositoryClass=ApartmentRepository::class)
@@ -42,6 +43,26 @@ class Apartment
      * @ORM\JoinColumn(nullable=false)
      */
     private $building;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updateAt;
+
+    public function __construct()
+    {
+        $this->setUpdateAt(new \DateTime());
+        if ($this->getCreateAt())
+        {
+            $this->setCreateAt(new \DateTime());
+            $this->setStatus(false);
+        }
+    }
 
     public function getId(): ?int
     {
@@ -104,6 +125,30 @@ class Apartment
     public function setBuilding(?Building $building): self
     {
         $this->building = $building;
+
+        return $this;
+    }
+
+    public function getCreateAt(): ?\DateTimeInterface
+    {
+        return $this->createAt;
+    }
+
+    public function setCreateAt(\DateTimeInterface $createAt): self
+    {
+        $this->createAt = $createAt;
+
+        return $this;
+    }
+
+    public function getUpdateAt(): ?\DateTimeInterface
+    {
+        return $this->updateAt;
+    }
+
+    public function setUpdateAt(\DateTimeInterface $updateAt): self
+    {
+        $this->updateAt = $updateAt;
 
         return $this;
     }

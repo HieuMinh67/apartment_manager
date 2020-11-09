@@ -42,7 +42,7 @@ class CitizenCrudController extends AbstractCrudController
             TextField::new('lastName'),
             TelephoneField::new('phone'),
             DateField::new('dateOfBirth'),
-            ChoiceField::new('gender')->setChoices(['Male' => 0, 'Female' => 1, 'Other' => 2]),
+            ChoiceField::new('gender')->setChoices(Citizen::$genderChoices),
             AssociationField::new('apartmentId')->autocomplete(),
         ];
         if ($pageName == Crud::PAGE_INDEX || $pageName == Crud::PAGE_DETAIL) {
