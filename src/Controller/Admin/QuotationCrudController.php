@@ -7,6 +7,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class QuotationCrudController extends AbstractCrudController
 {
@@ -24,5 +31,18 @@ class QuotationCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud->showEntityActionsAsDropdown();
+    }
+
+    public function configureFields(string $pageName): iterable
+    {
+        return [
+            IntegerField::new('id'),
+            TextField::new('name'),
+            TelephoneField::new('phone'),
+            EmailField::new('email'),
+            TextareaField::new('message'),
+            AssociationField::new('building'),
+            DateTimeField::new('createAt')
+        ];
     }
 }

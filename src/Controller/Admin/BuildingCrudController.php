@@ -6,6 +6,7 @@ use App\Entity\Building;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -32,14 +33,10 @@ class BuildingCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $fields = [
+        return [
             TextField::new('name'),
             TextField::new('address'),
             IntegerField::new('numberOfAppartment'),
         ];
-        if (Crud::PAGE_INDEX !== $pageName) {
-            $fields[] = AssociationField::new('apartment')->autocomplete();
-        }
-        return $fields;
     }
 }

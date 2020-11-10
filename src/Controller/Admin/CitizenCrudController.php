@@ -3,16 +3,22 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Citizen;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CitizenCrudController extends AbstractCrudController
@@ -33,6 +39,16 @@ class CitizenCrudController extends AbstractCrudController
         return $crud->showEntityActionsAsDropdown();
     }
 
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add(TextFilter::new('firstName'))
+            ->add('lastName')
+            ->add('phone')
+            ->add(ChoiceFilter::new('gender')->setChoices(Citizen::$genderChoices))
+            ->add(DateTimeFilter::new('dateOfBirth'));
+    }
+
     public function configureFields(string $pageName): iterable
     {
         $imgFile = ImageField::new('thumbnailFile')->setFormType(VichImageType::class)->setLabel('Avatar');
@@ -47,6 +63,7 @@ class CitizenCrudController extends AbstractCrudController
         ];
         if ($pageName == Crud::PAGE_INDEX || $pageName == Crud::PAGE_DETAIL) {
             $fields[] = $imgName;
+            $fields[] = DateTimeField::new('createAt');
         } else {
             $fields[] = $imgFile;
         }
