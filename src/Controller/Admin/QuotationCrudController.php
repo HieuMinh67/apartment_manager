@@ -33,16 +33,25 @@ class QuotationCrudController extends AbstractCrudController
         return $crud->showEntityActionsAsDropdown();
     }
 
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters->add(EntityFilter::new('building'))
+                    ->add(DateTimeFilter::new('createAt'));
+    }
+
     public function configureFields(string $pageName): iterable
     {
-        return [
+        $fields = [
             IntegerField::new('id'),
             TextField::new('name'),
             TelephoneField::new('phone'),
             EmailField::new('email'),
-            TextareaField::new('message'),
             AssociationField::new('building'),
             DateTimeField::new('createAt')
         ];
+        if ($pageName != Crud::PAGE_INDEX) {
+            $fields[] = TextareaField::new('message');
+        }
+        return $fields;
     }
 }
