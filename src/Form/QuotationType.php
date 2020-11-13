@@ -2,10 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Building;
 use App\Entity\Quotation;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,7 +21,11 @@ class QuotationType extends AbstractType
             ->add('name', TextType::class)
             ->add('phone', TelType::class)
             ->add('email', EmailType::class)
-            ->add('message', TextareaType::class)
+            ->add('message', TextareaType::class, ['required' => false])
+            ->add('building', EntityType::class, [
+                'class' => Building::class,
+                'choice_label' => 'name'
+            ])
         ;
     }
 
