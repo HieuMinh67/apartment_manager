@@ -1,15 +1,11 @@
 {{ form_start(quoteForm, {'method': "POST", 'attr': {'class': 'form-wrap'}, 'action': 'quotation/new'}) }}
 <h4 class="text-white pb-20">Request a Quote</h4>
 <div class="form-select" id="service-select">
-    <select>
-        {% for b in buildings %}
-            <option value="{{ b.id }}">{{ b.name }}</option>
-        {% endfor %}
-    </select>
+    {{ form_widget(quoteForm.building) }}
 </div>
 {{ form_widget(quoteForm.name, {'attr': {'class': 'form-control', 'placeholder': "Name"}}) }}
-								{{ form_widget(quoteForm.phone, {'attr': {'class': 'form-control', "placeholder": "Phone Number"}}) }}
-								{{ form_widget(quoteForm.email, {'attr': {'class': 'form-control', "placeholder": "Email Address"}}) }}
-								{{ form_widget(quoteForm.message, {'attr': {'class': 'form-control', "placeholder": "Message", 'cols':"30", 'rows':"5"}}) }}
+    {{ form_widget(quoteForm.phone, {'attr': {'class': 'form-control', "placeholder": "Phone Number"}}) }}
+    {{ form_widget(quoteForm.email, {'attr': {'class': 'form-control', "placeholder": "Email Address"}}) }}
+    {{ form_widget(quoteForm.message, {'attr': {'class': 'form-control', "placeholder": "Message", 'cols':"30", 'rows':"5"}}) }}
 <button class="primary-btn">Request Free Quote</button>
 {{ form_end(quoteForm) }}
