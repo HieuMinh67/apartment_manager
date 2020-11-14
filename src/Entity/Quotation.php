@@ -40,13 +40,43 @@ class Quotation
     private $message;
 
     /**
-     * @ORM\OneToMany(targetEntity=Building::class, mappedBy="quotation")
+     * @ORM\ManyToOne(targetEntity=Building::class, inversedBy="quotation")
      */
     private $building;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updateAt;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": "0"})
+     */
+    private $isArchived;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $archiveAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="quotations")
+     */
+    private $archiveBy;
+
     public function __construct()
     {
-        $this->building = new ArrayCollection();
+        $this->setUpdateAt(new \DateTime());
+        if ($this->getCreateAt() === null)
+        {
+            $this->setCreateAt(new \DateTime());
+        }
+        $this->archiveBy = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,33 +132,83 @@ class Quotation
         return $this;
     }
 
-    /**
-     * @return Collection|Building[]
-     */
-    public function getBuilding(): Collection
+    public function getCreateAt(): ?\DateTimeInterface
     {
-        return $this->building;
+        return $this->createAt;
     }
 
-    public function addBuilding(Building $building): self
+    public function setCreateAt(\DateTimeInterface $createAt): self
     {
-        if (!$this->building->contains($building)) {
-            $this->building[] = $building;
-            $building->setQuotation($this);
-        }
+        $this->createAt = $createAt;
 
         return $this;
     }
 
-    public function removeBuilding(Building $building): self
+    /**
+     * @return mixed
+     */
+    public function getBuilding()
     {
-        if ($this->building->contains($building)) {
-            $this->building->removeElement($building);
-            // set the owning side to null (unless already changed)
-            if ($building->getQuotation() === $this) {
-                $building->setQuotation(null);
-            }
-        }
+        return $this->building;
+    }
+
+    /**
+     * @param mixed $building
+     */
+    public function setBuilding($building): void
+    {
+        $this->building = $building;
+    }
+
+    public function getUpdateAt(): ?\DateTimeInterface
+    {
+        return $this->updateAt;
+    }
+
+    public function setUpdateAt(\DateTimeInterface $updateAt): self
+    {
+        $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return strval($this->updateAt);
+    }
+
+    public function getIsArchived(): ?bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setIsArchived(bool $isArchived): self
+    {
+        $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    public function getArchiveAt(): ?\DateTimeInterface
+    {
+        return $this->archiveAt;
+    }
+
+    public function setArchiveAt(?\DateTimeInterface $archiveAt): self
+    {
+        $this->archiveAt = $archiveAt;
+
+        return $this;
+    }
+
+    public function getArchiveBy(): ?User
+    {
+        return $this->archiveBy;
+    }
+
+    public function setArchiveBy(?User $archiveBy): self
+    {
+        $this->archiveBy = $archiveBy;
 
         return $this;
     }

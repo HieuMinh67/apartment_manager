@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Quotation;
 use App\Form\QuotationType;
-use App\Repository\QuotationRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +26,7 @@ class QuotationController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="quotation_new", methods={"GET","POST"})
+     * @Route("/new", name="quotation_new", methods={"POST"})
      */
     public function new(Request $request): Response
     {
@@ -39,13 +39,11 @@ class QuotationController extends AbstractController
             $entityManager->persist($quotation);
             $entityManager->flush();
 
+            $this->addFlash(
+                'notice', 'We will contact you as soon as possible.'
+            );
             return $this->redirectToRoute('homepage');
         }
-
-        return $this->render('quotation/new.html.twig', [
-            'quotation' => $quotation,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -57,7 +55,7 @@ class QuotationController extends AbstractController
             'quotation' => $quotation,
         ]);
     }
-
+//
     /**
      * @Route("/{id}/edit", name="quotation_edit", methods={"GET","POST"})
      */
@@ -74,7 +72,7 @@ class QuotationController extends AbstractController
 
         return $this->render('quotation/edit.html.twig', [
             'quotation' => $quotation,
-            'form' => $form->createView(),
+            'quoteForm' => $form->createView(),
         ]);
     }
 

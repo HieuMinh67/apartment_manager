@@ -59,12 +59,12 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-file-text');
         yield MenuItem::section("Employee");
-        yield MenuItem::linkToCrud('List employee', 'fa fa-user', User::class);
+        yield MenuItem::linkToCrud('Employee list', 'fa fa-user', User::class);
         yield MenuItem::section("Citizen");
-        yield MenuItem::linkToCrud('List citizen', 'fa fa-user', Citizen::class);
-        yield MenuItem::linkToCrud('Add citizen', 'fa fa-plus', Citizen::class)->setAction('new');
+        yield MenuItem::linkToCrud('Citizen list', 'fa fa-user', Citizen::class);
+        yield MenuItem::linkToCrud('Add Citizen', 'fa fa-plus', Citizen::class)->setAction('new');
         yield MenuItem::section("Apartment");
-        yield MenuItem::linkToCrud('List apartment', 'fa fa-home', Apartment::class);
+        yield MenuItem::linkToCrud('Apartment List', 'fa fa-home', Apartment::class);
         yield MenuItem::section("Building");
         yield MenuItem::linkToCrud('List building', 'fa fa-building', Building::class);
         yield MenuItem::linkToCrud('Add building', 'fa fa-plus', Building::class)->setAction('new');
