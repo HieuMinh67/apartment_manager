@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -75,12 +77,24 @@ class User implements UserInterface
      */
     private $createAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Quotation::class, mappedBy="archiveBy")
+     */
+    private $quotations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Timesheets::class, mappedBy="userId")
+     */
+    private $timesheets;
+
     public function __construct()
     {
         $this->updateAt = new \DateTime();
         if ($this->createAt === null) {
             $this->createAt = new \DateTime();
         }
+        $this->quotations = new ArrayCollection();
+        $this->timesheets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -152,7 +166,9 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        if (sizeof($roles) == 0) {
+            $roles[] = 'ROLE_USER';
+        }
 
         return array_unique($roles);
     }
@@ -240,6 +256,65 @@ class User implements UserInterface
     public function setCreateAt(\DateTimeInterface $createAt): self
     {
         $this->createAt = $createAt;
+
+        return $this;
+    }
+
+    public function addQuotation(Quotation $quotation): self
+    {
+        if (!$this->quotations->contains($quotation)) {
+            $this->quotations[] = $quotation;
+            $quotation->setArchiveBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuotation(Quotation $quotation): self
+    {
+        if ($this->quotations->contains($quotation)) {
+            $this->quotations->removeElement($quotation);
+            // set the owning side to null (unless already changed)
+            if ($quotation->getArchiveBy() === $this) {
+                $quotation->setArchiveBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getId()." - ".$this->getFirstName()." ".$this->getLastName();
+    }
+
+    /**
+     * @return Collection|Timesheets[]
+     */
+    public function getTimesheets(): Collection
+    {
+        return $this->timesheets;
+    }
+
+    public function addTimesheet(Timesheets $timesheet): self
+    {
+        if (!$this->timesheets->contains($timesheet)) {
+            $this->timesheets[] = $timesheet;
+            $timesheet->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTimesheet(Timesheets $timesheet): self
+    {
+        if ($this->timesheets->contains($timesheet)) {
+            $this->timesheets->removeElement($timesheet);
+            // set the owning side to null (unless already changed)
+            if ($timesheet->getUserId() === $this) {
+                $timesheet->setUserId(null);
+            }
+        }
 
         return $this;
     }

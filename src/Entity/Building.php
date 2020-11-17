@@ -40,13 +40,14 @@ class Building
     private $apartment;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Quotation::class, inversedBy="building")
+     * @ORM\OneToMany(targetEntity=Quotation::class, mappedBy="building")
      */
     private $quotation;
 
     public function __construct()
     {
         $this->apartment = new ArrayCollection();
+        $this->quotation = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -121,17 +122,38 @@ class Building
         return $this;
     }
 
-    public function getQuotation(): ?Quotation
+    /**
+     * @return Collection|Quotation[]
+     */
+    public function getQuotation(): Collection
     {
         return $this->quotation;
     }
 
-    public function setQuotation(?Quotation $quotation): self
+    public function addQuotation(Quotation $quotation): self
     {
-        $this->quotation = $quotation;
+        if (!$this->quotation->contains($quotation)) {
+            $this->quotation[] = $quotation;
+            $quotation->setBuilding($this);
+        }
 
         return $this;
     }
+
+    public function removeQuotation(Quotation $quotation): self
+    {
+        if ($this->quotation->contains($quotation)) {
+            $this->quotation->removeElement($quotation);
+            // set the owning side to null (unless already changed)
+            if ($quotation->getBuilding() === $this) {
+                $quotation->setBuilding(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 
     public function __toString()
     {

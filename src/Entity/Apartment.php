@@ -57,7 +57,7 @@ class Apartment
     public function __construct()
     {
         $this->setUpdateAt(new \DateTime());
-        if ($this->getCreateAt())
+        if ($this->getCreateAt() === null)
         {
             $this->setCreateAt(new \DateTime());
             $this->setStatus(false);

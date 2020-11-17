@@ -21,12 +21,12 @@ class LandingpageController extends AbstractController
      * @Route("/", name="homepage")
      */
     public function homepage(): Response {
-        $buildings = $this->getDoctrine()->getRepository(Building::class)->findAll();
+        $buildings = $this->getDoctrine()->getRepository(Building::class)->countBuildings();
         $employee = $this->getDoctrine()->getRepository(User::class)->countEmployee();
         $quote = $this->getDoctrine()->getRepository(Quotation::class)->countQuote();
         $citizen = $this->getDoctrine()->getRepository(Citizen::class)->countCitizen();
         $form = $this->createForm(QuotationType::class);
-        return $this->render('LandingPage/index.html.twig', ["buildings" => $buildings, "numberOfCitizen" => $citizen, "numberOfQuote" => $quote, "numberOfBuildings" => count($buildings), "numberOfEmployee" => $employee, "quoteForm" => $form->createView()]);
+        return $this->render('LandingPage/index.html.twig', ["numberOfCitizen" => $citizen, "numberOfQuote" => $quote, "numberOfBuildings" => $buildings, "numberOfEmployee" => $employee, "quoteForm" => $form->createView()]);
     }
 
     /**
@@ -49,14 +49,14 @@ class LandingpageController extends AbstractController
      * @Route("services", name="service")
      */
     public function service(): Response {
-        return $this->render("LandingPage/services.html");
+        return $this->render("LandingPage/services.html.twig");
     }
 
     /**
      * @Route("projects", name="project")
      */
     public function project(): Response {
-        return $this->render("LandingPage/projects.html");
+        return $this->render("LandingPage/projects.html.twig");
     }
 
     /**
@@ -64,5 +64,12 @@ class LandingpageController extends AbstractController
      */
     public function blog(): Response {
         return $this->render("LandingPage/blog-home.html.twig");
+    }
+
+    /**
+     * @Route("elements", name="elements")
+     */
+    public function element(): Response {
+        return $this->render("LandingPage/elements.html.twig");
     }
 }
