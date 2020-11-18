@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\QuotationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -65,7 +64,7 @@ class Quotation
     private $archiveAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="quotations")
+     * @ORM\ManyToOne(targetEntity=Employee::class, inversedBy="quotations")
      */
     private $archiveBy;
 
@@ -76,7 +75,6 @@ class Quotation
         {
             $this->setCreateAt(new \DateTime());
         }
-        $this->archiveBy = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -201,12 +199,12 @@ class Quotation
         return $this;
     }
 
-    public function getArchiveBy(): ?User
+    public function getArchiveBy(): ?Employee
     {
         return $this->archiveBy;
     }
 
-    public function setArchiveBy(?User $archiveBy): self
+    public function setArchiveBy(?Employee $archiveBy): self
     {
         $this->archiveBy = $archiveBy;
 

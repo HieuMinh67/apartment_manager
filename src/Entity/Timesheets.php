@@ -18,10 +18,10 @@ class Timesheets
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="timesheets")
+     * @ORM\ManyToOne(targetEntity=Employee::class, inversedBy="timesheets")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $userId;
+    private $EmployeeId;
 
     /**
      * @ORM\Column(type="datetime")
@@ -43,14 +43,14 @@ class Timesheets
         return $this->id;
     }
 
-    public function getUserId(): ?User
+    public function getEmployeeId(): ?Employee
     {
-        return $this->userId;
+        return $this->EmployeeId;
     }
 
-    public function setUserId(?User $userId): self
+    public function setEmployeeId(?Employee $EmployeeId): self
     {
-        $this->userId = $userId;
+        $this->EmployeeId = $EmployeeId;
 
         return $this;
     }

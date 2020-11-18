@@ -2,25 +2,24 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\User;
+use App\Entity\Employee;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class UserCrudController extends AbstractCrudController
+class EmployeeCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return User::class;
+        return Employee::class;
     }
+
 
     public function configureCrud(Crud $crud): Crud
     {
@@ -41,7 +40,6 @@ class UserCrudController extends AbstractCrudController
         $fields = [
             TextField::new('firstName'),
             TextField::new('lastName'),
-            EmailField::new('email'),
 //            ChoiceField::new('roles')->setChoices(['ADMIN' => ['ROLE_ADMIN'], 'MANAGER' => ['ROLE_MANAGER'], 'STAFF' => ['ROLE_STAFF']]),
             TelephoneField::new('phone'),
         ];

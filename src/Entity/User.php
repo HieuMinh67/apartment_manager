@@ -4,15 +4,11 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @Vich\Uploadable
  */
 class User implements UserInterface
 {
@@ -40,101 +36,14 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\OneToOne(targetEntity=Employee::class, inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $firstName;
-
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
-    private $lastName;
-
-    /**
-     * @ORM\Column(type="string", length=15)
-     */
-    private $phone;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @var string|null
-     */
-    private $thumbnail;
-
-    /**
-     * @Vich\UploadableField(mapping="employee_image", fileNameProperty="thumbnail")
-     */
-    private $thumbnailFile;
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @var \DateTimeInterface|null
-     */
-    private $updateAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createAt;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Quotation::class, mappedBy="archiveBy")
-     */
-    private $quotations;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Timesheets::class, mappedBy="userId")
-     */
-    private $timesheets;
-
-    public function __construct()
-    {
-        $this->updateAt = new \DateTime();
-        if ($this->createAt === null) {
-            $this->createAt = new \DateTime();
-        }
-        $this->quotations = new ArrayCollection();
-        $this->timesheets = new ArrayCollection();
-    }
+    private $employee;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getThumbnail(): ?string
-    {
-        return $this->thumbnail;
-    }
-
-    /**
-     * @param string|null $thumbnail
-     */
-    public function setThumbnail(?string $thumbnail): void
-    {
-        $this->thumbnail = $thumbnail;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getThumbnailFile()
-    {
-        return $this->thumbnailFile;
-    }
-
-    /**
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $thumbnailFile
-     */
-    public function setThumbnailFile(?File $thumbnailFile = null): void
-    {
-        $this->thumbnailFile = $thumbnailFile;
-        if (null !== $thumbnailFile) {
-            $this->updateAt = new \DateTimeImmutable();
-        }
     }
 
     public function getEmail(): ?string
@@ -212,109 +121,14 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getFirstName(): ?string
+    public function getEmployee(): ?Employee
     {
-        return $this->firstName;
+        return $this->employee;
     }
 
-    public function setFirstName(string $firstName): self
+    public function setEmployee(Employee $employee): self
     {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(string $lastName): self
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone): self
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getCreateAt(): ?\DateTimeInterface
-    {
-        return $this->createAt;
-    }
-
-    public function setCreateAt(\DateTimeInterface $createAt): self
-    {
-        $this->createAt = $createAt;
-
-        return $this;
-    }
-
-    public function addQuotation(Quotation $quotation): self
-    {
-        if (!$this->quotations->contains($quotation)) {
-            $this->quotations[] = $quotation;
-            $quotation->setArchiveBy($this);
-        }
-
-        return $this;
-    }
-
-    public function removeQuotation(Quotation $quotation): self
-    {
-        if ($this->quotations->contains($quotation)) {
-            $this->quotations->removeElement($quotation);
-            // set the owning side to null (unless already changed)
-            if ($quotation->getArchiveBy() === $this) {
-                $quotation->setArchiveBy(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->getId()." - ".$this->getFirstName()." ".$this->getLastName();
-    }
-
-    /**
-     * @return Collection|Timesheets[]
-     */
-    public function getTimesheets(): Collection
-    {
-        return $this->timesheets;
-    }
-
-    public function addTimesheet(Timesheets $timesheet): self
-    {
-        if (!$this->timesheets->contains($timesheet)) {
-            $this->timesheets[] = $timesheet;
-            $timesheet->setUserId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTimesheet(Timesheets $timesheet): self
-    {
-        if ($this->timesheets->contains($timesheet)) {
-            $this->timesheets->removeElement($timesheet);
-            // set the owning side to null (unless already changed)
-            if ($timesheet->getUserId() === $this) {
-                $timesheet->setUserId(null);
-            }
-        }
+        $this->employee = $employee;
 
         return $this;
     }

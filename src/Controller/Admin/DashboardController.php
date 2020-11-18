@@ -5,8 +5,10 @@ namespace App\Controller\Admin;
 use App\Entity\Apartment;
 use App\Entity\Building;
 use App\Entity\Citizen;
+use App\Entity\Employee;
 use App\Entity\Quotation;
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -24,12 +26,18 @@ class DashboardController extends AbstractDashboardController
         $this->encoder = $encoder;
     }
 
+    public function configureAssets(): Assets
+    {
+        return Assets::new()->addCssFile('css/admin-styles.css');
+    }
+
     /**
      * @Route("/admin", name="admin")
      */
     public function index(): Response
     {
-        return $this->render('bundles/EasyAdminBundle/page/dashboard.html.twig');
+        $employee = $this->getDoctrine()->getRepository(Employee::class)->getLastYearEmployee();
+        return $this->render('bundles/EasyAdminBundle/page/dashboard.html.twig', ['recentEmployeeInYear' => $employee]);
     }
 
     /**
@@ -58,8 +66,12 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-file-text');
+        if ($this->isGranted("ROLE_ADMIN")) {
+            yield MenuItem::section("User");
+            yield MenuItem::linkToCrud('User list', 'fa fa-user', User::class);
+        }
         yield MenuItem::section("Employee");
-        yield MenuItem::linkToCrud('Employee list', 'fa fa-user', User::class);
+        yield MenuItem::linkToCrud('Employee list', 'fa fa-user', Employee::class);
         yield MenuItem::section("Citizen");
         yield MenuItem::linkToCrud('Citizen list', 'fa fa-user', Citizen::class);
         yield MenuItem::linkToCrud('Add Citizen', 'fa fa-plus', Citizen::class)->setAction('new');

@@ -27,7 +27,7 @@ class BuildingFixtures extends Fixture implements FixtureGroupInterface
             $building->setNumberOfAppartment(rand(100, 150));
             $building->setAddress($i . " Đại lộ Mai Chí Thọ, P . An Phú, Q.2");
 
-            for ($j = 0; $j < 10; $j++) {
+            for ($j = 0; $j < 2; $j++) {
                 $quote = new Quotation();
                 $genName = array_rand($name, 2);
                 $quote->setName($name[$genName[0]]. " " .$name[$genName[1]]);
@@ -35,6 +35,7 @@ class BuildingFixtures extends Fixture implements FixtureGroupInterface
                 $quote->setEmail(strtolower($name[$genName[0]].$name[$genName[1]].strval(rand(10000,99999)).'@gmail.com'));
                 $quote->setMessage(file_get_contents('http://loripsum.net/api/1/medium/plaintext'));
                 $quote->setBuilding($building);
+                $quote->setIsArchived(true);
                 $manager->persist($quote);
             }
             $manager->persist($building);

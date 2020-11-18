@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 
 
 use App\Entity\Citizen;
+use App\Entity\Employee;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -20,14 +21,17 @@ class UserFixtures extends Fixture
     }
     public function load(ObjectManager $manager)
     {
+        $employee = new Employee();
+        $employee->setPhone("+84989190190");
+        $employee->setFirstName("Hieu");
+        $employee->setLastName("Pham");
         $user = new User();
         $user->setEmail("admin");
         $user->setRoles(["ROLE_ADMIN"]);
         $user->setPassword($this->encoder->encodePassword($user, 'Admin@123'));
-        $user->setPhone("+84989190190");
-        $user->setFirstName("Hieu");
-        $user->setLastName("Pham");
+        $user->setEmployee($employee);
         $manager->persist($user);
+        $manager->persist($employee);
 
         $csv = fopen(dirname(__FILE__) . '/data.csv', 'r');
         $i = 0;
