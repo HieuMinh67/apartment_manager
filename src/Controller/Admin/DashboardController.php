@@ -90,19 +90,19 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-file-text');
         if ($this->isGranted("ROLE_ADMIN")) {
             yield MenuItem::section("User");
-            yield MenuItem::linkToCrud('User list', 'fa fa-user', User::class);
+            yield MenuItem::linkToCrud('User', 'fa fa-user', User::class);
         }
         yield MenuItem::section("Employee");
-        yield MenuItem::linkToCrud('Employee list', 'fa fa-user', Employee::class);
+        yield MenuItem::linkToCrud('Manage Employee', 'fa fa-user', Employee::class);
         yield MenuItem::section("Citizen");
-        yield MenuItem::linkToCrud('Citizen list', 'fa fa-user', Citizen::class);
+        yield MenuItem::linkToCrud('Manage Citizen', 'fa fa-user', Citizen::class);
         yield MenuItem::linkToCrud('Add Citizen', 'fa fa-plus', Citizen::class)->setAction('new');
         yield MenuItem::section("Apartment");
-        yield MenuItem::linkToCrud('Apartment List', 'fa fa-home', Apartment::class);
+        yield MenuItem::linkToCrud('Manage Apartment', 'fa fa-home', Apartment::class);
         yield MenuItem::section("Building");
-        yield MenuItem::linkToCrud('List building', 'fa fa-building', Building::class);
-        yield MenuItem::linkToCrud('Add building', 'fa fa-plus', Building::class)->setAction('new');
+        yield MenuItem::linkToCrud('Manage Building', 'fa fa-building', Building::class);
+        yield MenuItem::linkToCrud('Add Building', 'fa fa-plus', Building::class)->setAction('new');
         yield MenuItem::section("Quote request");
-        yield MenuItem::linkToCrud('List quote', 'fa fa-envelope', Quotation::class);
+        yield MenuItem::linkToCrud('Manage Quote', 'fa fa-envelope', Quotation::class);
     }
 }
