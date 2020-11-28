@@ -19,6 +19,8 @@ class CitizenRepository extends ServiceEntityRepository
         parent::__construct($registry, Citizen::class);
     }
 
+
+
     // /**
     //  * @return Citizen[] Returns an array of Citizen objects
     //  */
@@ -53,5 +55,12 @@ class CitizenRepository extends ServiceEntityRepository
             ->select('count(c) as count')
             ->getQuery()
             ->getSingleResult()['count'];
+    }
+
+    public function statistic() {
+        return $this->createQueryBuilder('c')
+                    ->select("YEAR(CURRENT_DATE()) - YEAR(c.dateOfBirth) as age, count(YEAR(CURRENT_DATE()) - YEAR(c.dateOfBirth)) as count")
+                    ->groupBy('age')
+                    ->getQuery()->getResult();
     }
 }

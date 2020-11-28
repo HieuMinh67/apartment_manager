@@ -36,10 +36,10 @@ class UserFixtures extends Fixture
         $csv = fopen(dirname(__FILE__) . '/data.csv', 'r');
         $i = 0;
         $gender = ['female', 'male'];
-        $min = strtotime('47 years ago');
-        $max = strtotime('18 years ago');
-        $rand_time = mt_rand($min, $max);
+        $min = strtotime('85 years ago');
+        $max = strtotime('5 years ago');
         while ($line = fgetcsv($csv, 203, "|")) {
+            $rand_time = mt_rand($min, $max);
             $citizen[$i] = new Citizen();
             $citizen[$i]->setFirstName($line[2]);
             $citizen[$i]->setLastName($line[1]);
