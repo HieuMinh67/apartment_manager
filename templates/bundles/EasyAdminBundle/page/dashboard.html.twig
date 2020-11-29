@@ -34,16 +34,56 @@
             </div>
         </div>
         <div class="col-md-12 col-xl-6">
-            <canvas id="myChart" width="400" height="400"></canvas>
+            <canvas id="citizenChart" height="250"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-xl-6"></div>
+        <div class="col-md-12 col-xl-6">
+            <canvas id="quoteChart" width="400"></canvas>
         </div>
     </div>
 {% endblock %}
 {% block body_javascript %}
     <script src="{{ asset('bundles/chart/Chart.min.js') }}"></script>
     <script>
-        console.log({{ citizenData|json_encode() }})
-        var ctx = document.getElementById('myChart');
-        var myChart = new Chart(ctx, {
+        var quoteChart = new Chart(document.getElementById('quoteChart'), {
+            type: 'line',
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                ],
+                datasets: [{
+                    label: '# number of quotation monthly',
+                    data: {{ quoteData|json_encode() }} ,
+                    backgroundColor: [
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)'
+                    ],
+                    borderWidth: 1
+                }]
+
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        stacked: true
+                    }]
+                }
+            }
+
+        });
+        var myChart = new Chart(document.getElementById('citizenChart'), {
             type: 'bar',
             data: {
                 labels: ['Under 20', '20 - 39', '40 - 59', '60 - 79', 'Above 79'],
