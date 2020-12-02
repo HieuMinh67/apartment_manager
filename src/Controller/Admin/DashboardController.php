@@ -12,7 +12,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,8 +28,8 @@ class DashboardController extends AbstractDashboardController
 
     public function configureAssets(): Assets
     {
-        return Assets::new()->addCssFile('css/admin-styles.css')
-            ->addCssFile('bundles/chart/Chart.min.css');
+//        return Assets::new()->addCssFile('css/admin-style.css')
+        return Assets::new()->addCssFile('lib/chart/Chart.min.css');
     }
 
     /**
@@ -43,7 +42,7 @@ class DashboardController extends AbstractDashboardController
         $citizenData = array(0, 0, 0, 0, 0);
         foreach ($citizenStatistic as $i) {
             if ($i['age'] < 20) {
-                 $citizenData[0] += $i['count'];
+                $citizenData[0] += $i['count'];
             } elseif ($i['age'] < 40) {
                 $citizenData[1] += $i['count'];
             } elseif ($i['age'] < 60) {
@@ -54,12 +53,18 @@ class DashboardController extends AbstractDashboardController
                 $citizenData[4] += $i['count'];
             }
         }
-//        return new JsonResponse([
-//            'recentEmployeeInYear' => $employee, 'citizenData' => $citizenData,
-//            'html' => $this->renderView('bundles/EasyAdminBundle/page/dashboard.html.twig')
-//        ]);
+        $quoteStatistic = $this->getDoctrine()->getRepository(Quotation::class)->getQuoteData();
+        $quoteLabels = [];
+        $quoteValues = [];
+        $labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+        foreach ($quoteStatistic as $i) {
+            $quoteLabels[] = $labels[intval($i['month'])-1] . "-" . $i['year'];
+            $quoteValues[] = intval($i['count']);
+        }
         return $this->render('bundles/EasyAdminBundle/page/dashboard.html.twig',
-            ['recentEmployeeInYear' => $employee, 'citizenData' => $citizenData]);
+            ['recentEmployeeInYear' => $employee, 'citizenData' => $citizenData, 'quoteLabels' => $quoteLabels, 'quoteValues' => $quoteValues]);
     }
 
     /**

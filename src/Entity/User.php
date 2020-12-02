@@ -41,6 +41,11 @@ class User implements UserInterface
      */
     private $employee;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $active=true;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -129,6 +134,18 @@ class User implements UserInterface
     public function setEmployee(Employee $employee): self
     {
         $this->employee = $employee;
+
+        return $this;
+    }
+
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
         return $this;
     }

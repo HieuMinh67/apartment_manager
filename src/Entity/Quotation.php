@@ -170,11 +170,6 @@ class Quotation
         return $this;
     }
 
-    public function __toString()
-    {
-        return strval($this->updateAt);
-    }
-
     public function getIsArchived(): ?bool
     {
         return $this->isArchived;

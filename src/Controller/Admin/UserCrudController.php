@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -22,11 +23,6 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud->showEntityActionsAsDropdown();
-    }
-
     public function configureActions(Actions $actions): Actions
     {
         return $actions->add(Crud::PAGE_INDEX, Action::DETAIL)
@@ -36,20 +32,11 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $imgFile = ImageField::new('thumbnailFile')->setFormType(VichImageType::class)->setLabel('Avatar');
-        $imgName = ImageField::new('thumbnail')->setBasePath('/images/employee/')->setLabel('Avatar');
-        $fields = [
-            TextField::new('firstName'),
-            TextField::new('lastName'),
+        return [
+            IntegerField::new('id'),
             EmailField::new('email'),
-//            ChoiceField::new('roles')->setChoices(['ADMIN' => ['ROLE_ADMIN'], 'MANAGER' => ['ROLE_MANAGER'], 'STAFF' => ['ROLE_STAFF']]),
-            TelephoneField::new('phone'),
+            ChoiceField::new('roles')->setChoices(['Admin' => 'ROLE_ADMIN', 'Manager' => 'ROLE_MANAGER', 'Staff' => 'ROLE_STAFF']),
+            ImageField::new('employee.thumbnail')->setBasePath('/images/employee/')->setLabel('Avatar'),
         ];
-        if ($pageName == Crud::PAGE_DETAIL | $pageName == Crud::PAGE_INDEX) {
-            $fields[] = $imgName;
-        } else {
-            $fields[] = $imgFile;
-        }
-        return $fields;
     }
 }

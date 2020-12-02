@@ -45,17 +45,15 @@
     </div>
 {% endblock %}
 {% block body_javascript %}
-    <script src="{{ asset('bundles/chart/Chart.min.js') }}"></script>
+    <script src="{{ asset('lib/chart/Chart.min.js') }}"></script>
     <script>
         var quoteChart = new Chart(document.getElementById('quoteChart'), {
             type: 'line',
             data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-                ],
+                labels: {{ quoteLabels|json_encode|raw }},
                 datasets: [{
                     label: '# number of quotation monthly',
-                    data: {{ quoteData|json_encode() }} ,
+                    data: {{ quoteValues|json_encode() }} ,
                     backgroundColor: [
                         'rgba(255, 206, 86, 0.2)',
                         'rgba(54, 162, 235, 0.2)',

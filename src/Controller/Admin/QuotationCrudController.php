@@ -74,6 +74,9 @@ class QuotationCrudController extends AbstractCrudController
             $fields[] = TextareaField::new('message');
             $fields[] = TelephoneField::new('phone');
         }
+        if ($pageName == Crud::PAGE_DETAIL) {
+            $fields[] = BooleanField::new('isArchived');
+        }
         if ($this->getUser()->getRoles()[0] != 'ROLE_ADMIN') {
             $fields = array_merge($fields, array(AssociationField::new('building'), EmailField::new('email')));
         } else {

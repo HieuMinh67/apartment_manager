@@ -48,6 +48,16 @@ class QuotationRepository extends ServiceEntityRepository
     }
     */
 
+    public function getQuoteData() {
+        return $this->createQueryBuilder('q')
+            ->select('count(q.id) as count, MONTH(q.createAt) as month, YEAR(q.createAt) as year')
+            ->groupBy('month')
+            ->addOrderBy("year", "ASC")
+            ->addOrderBy("month", "ASC")
+            ->getQuery()
+            ->getResult();
+    }
+
     public function countQuote(): int {
         return $this->createQueryBuilder('q')
             ->select('count(q) as count')
