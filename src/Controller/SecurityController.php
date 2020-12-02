@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\Admin\CitizenCrudController;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,9 +18,22 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
+            dump($this->getUser());
+
+            exit();
+            die();
             if ($this->getUser()->getRoles() !== "ROLE_STAFF") {
                 return $this->redirectToRoute('admin');
-            } else {
+            }
+            $repository = $this->getDoctrine()->getRepository(User::class);
+            $user = $repository->findOneBy([
+                'email' => $this->getUser()->getUsername(),
+            ]);
+            dump($user);
+
+            exit();
+            die();
+            if ($user->getActive()) {
                 $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
                 return $this->redirect($routeBuilder->setController(CitizenCrudController::class));
             }

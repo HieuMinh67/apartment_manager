@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
@@ -25,9 +26,9 @@ class UserCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        return $actions->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT, Action::DELETE])
-            ->setPermissions([Action::NEW => 'ROLE_ADMIN', Action::EDIT, 'ROLE_ADMIN', Action::DELETE, 'ROLE_ADMIN']);
+        return $actions->remove(Crud::PAGE_INDEX, Action::EDIT)
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
+            ;
     }
 
     public function configureFields(string $pageName): iterable
@@ -36,7 +37,9 @@ class UserCrudController extends AbstractCrudController
             IntegerField::new('id'),
             EmailField::new('email'),
             ChoiceField::new('roles')->setChoices(['Admin' => 'ROLE_ADMIN', 'Manager' => 'ROLE_MANAGER', 'Staff' => 'ROLE_STAFF']),
+            TelephoneField::new('employee.phone'),
             ImageField::new('employee.thumbnail')->setBasePath('/images/employee/')->setLabel('Avatar'),
+            BooleanField::new('active'),
         ];
     }
 }

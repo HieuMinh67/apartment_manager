@@ -47,6 +47,7 @@ class EmployeeCrudController extends AbstractCrudController
             $fields[] = $imgName;
         } else {
             $fields[] = $imgFile;
+            $fields[] = $imgName;
         }
         return $fields;
     }

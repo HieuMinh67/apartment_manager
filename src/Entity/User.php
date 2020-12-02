@@ -137,7 +137,9 @@ class User implements UserInterface
 
         return $this;
     }
-
+    /**
+     * @see UserInterface
+     */
     public function getActive(): ?bool
     {
         return $this->active;

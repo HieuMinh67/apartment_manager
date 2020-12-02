@@ -43,6 +43,11 @@ class Employee implements \Serializable
     private $thumbnail;
 
     /**
+     * @Vich\UploadableField(mapping="employee_image", fileNameProperty="thumbnail")
+     */
+    private $thumbnailFile;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updateAt;
@@ -56,11 +61,6 @@ class Employee implements \Serializable
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="employee", cascade={"persist", "remove"})
      */
     private $user;
-
-    /**
-     * @Vich\UploadableField(mapping="employee_image", fileNameProperty="thumbnail")
-     */
-    private $thumbnailFile;
 
     /**
      * @ORM\OneToMany(targetEntity=Quotation::class, mappedBy="archiveBy")
