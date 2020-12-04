@@ -21,17 +21,11 @@ class UserFixtures extends Fixture
     }
     public function load(ObjectManager $manager)
     {
-        $employee = new Employee();
-        $employee->setPhone("+84989190190");
-        $employee->setFirstName("Hieu");
-        $employee->setLastName("Pham");
         $user = new User();
         $user->setEmail("admin");
         $user->setRoles(["ROLE_ADMIN"]);
-        $user->setPassword($this->encoder->encodePassword($user, 'Admin@123'));
-        $user->setEmployee($employee);
+        $user->setPassword($this->encoder->encodePassword($user, 'admin'));
         $manager->persist($user);
-        $manager->persist($employee);
 
         $csv = fopen(dirname(__FILE__) . '/data.csv', 'r');
         $i = 0;
@@ -46,6 +40,8 @@ class UserFixtures extends Fixture
             $citizen[$i]->setPhone($line[0]);
             $citizen[$i]->setGender(array_rand($gender, 1));
             $citizen[$i]->setDateOfBirth(\DateTime::createFromFormat('Y-m-d', date('Y-m-d', $rand_time)));
+//            $citizen[$i]->set
+//            $citizen[$i]->setApartmentId('');
             $manager->persist($citizen[$i]);
 
             $this->addReference("new Citizen-" . $i, $citizen[$i]);

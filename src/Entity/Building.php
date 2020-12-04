@@ -40,7 +40,7 @@ class Building
     private $apartment;
 
     /**
-     * @ORM\OneToMany(targetEntity=Quotation::class, mappedBy="building")
+     * @ORM\OneToMany(targetEntity=Quotation::class, mappedBy="building", orphanRemoval=true)
      */
     private $quotation;
 

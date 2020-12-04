@@ -35,7 +35,9 @@ class QuotationCrudController extends AbstractCrudController
         return $actions->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_DETAIL, $archiveQuote)
             ->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT, Action::DELETE])
-            ->setPermissions([Action::NEW => 'ROLE_ADMIN', Action::EDIT, 'ROLE_ADMIN', Action::DELETE, 'ROLE_ADMIN']);
+            ->setPermissions([ Action::EDIT, 'ROLE_ADMIN', Action::DELETE, 'ROLE_ADMIN'])
+            ->disable(Action::NEW)
+    ;
     }
 
     public function quotationArchive(AdminContext $context)

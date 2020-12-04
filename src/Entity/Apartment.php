@@ -40,7 +40,7 @@ class Apartment
 
     /**
      * @ORM\ManyToOne(targetEntity=Building::class, inversedBy="apartment")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $building;
 

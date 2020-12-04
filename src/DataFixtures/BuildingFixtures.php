@@ -22,11 +22,12 @@ class BuildingFixtures extends Fixture implements FixtureGroupInterface
     public function load(ObjectManager $manager)
     {
         $name = ["Jake", "Noah", "James", "Jack", "Connor", "Liam", "John", "Harry", "Callum", "Mason", "Robert", "Jacob", "Michael", "Charlie", "Kyle", "William", "Thomas", "Joe", "Ethan", "David", "George", "Reece", "Michael", "Richard", "Oscar", "Rhys", "Alexander", "Joseph", "James", "Charlie", "James", "Charles", "William", "Damian", "Daniel", "Thomas"];
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $building = new Building();
             $building->setName("THE SUN AVENUE" . $i);
             $building->setNumberOfAppartment(rand(100, 150));
             $building->setAddress($i . " Đại lộ Mai Chí Thọ, P . An Phú, Q.2");
+            $manager->persist($building);
             for ($i = 0; $i < $building->getNumberOfAppartment(); $i++) {
                 $apartment = new Apartment();
                 $apartment->setBuilding($building);
@@ -47,7 +48,6 @@ class BuildingFixtures extends Fixture implements FixtureGroupInterface
                 $quote->setIsArchived(false);
                 $manager->persist($quote);
             }
-            $manager->persist($building);
         }
 
         $manager->flush();

@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,7 +38,15 @@ class DashboardController extends AbstractDashboardController
      */
     public function index(): Response
     {
-        $employee = $this->getDoctrine()->getRepository(Employee::class)->getLastYearEmployee();
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        $user = $repository->findOneBy([
+            'email' => $this->getUser()->getUsername(),
+        ]);
+        if (!$user->getActive()) {
+            $this->addFlash("fail", "Your account is disabled!");
+            return $this->redirectToRoute("app_logout");
+        }
+        $citizen = $this->getDoctrine()->getRepository(Citizen::class)->getRecentBirthDay();
         $citizenStatistic = $this->getDoctrine()->getRepository(Citizen::class)->statistic();
         $citizenData = array(0, 0, 0, 0, 0);
         foreach ($citizenStatistic as $i) {
@@ -64,7 +73,7 @@ class DashboardController extends AbstractDashboardController
             $quoteValues[] = intval($i['count']);
         }
         return $this->render('bundles/EasyAdminBundle/page/dashboard.html.twig',
-            ['recentEmployeeInYear' => $employee, 'citizenData' => $citizenData, 'quoteLabels' => $quoteLabels, 'quoteValues' => $quoteValues]);
+            ['getRecentBirthDay' => $citizen, 'citizenData' => $citizenData, 'quoteLabels' => $quoteLabels, 'quoteValues' => $quoteValues]);
     }
 
     /**
@@ -87,18 +96,23 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setTitle('<img class="w-25" src="images/long_logo.png">')
-            ->setFaviconPath('images/favicon.png');
+            ->setFaviconPath('<img class="w-25" src="images/long_logo.png">');
+//            ->setFaviconPath('images/favicon.png');
     }
 
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-file-text');
-        if ($this->isGranted("ROLE_ADMIN")) {
+        if ($this->isGranted("ROLE_ADMIN") | $this->isGranted("ROLE_MANAGER")) {
             yield MenuItem::section("User");
-            yield MenuItem::linkToCrud('User', 'fa fa-user', User::class);
+            yield MenuItem::linkToCrud('Manage User', 'fa fa-user', User::class);
+            yield MenuItem::linkToCrud('Add User', 'fa fa-plus', User::class)->setAction('new');
         }
         yield MenuItem::section("Employee");
         yield MenuItem::linkToCrud('Manage Employee', 'fa fa-user', Employee::class);
+        if ($this->isGranted("ROLE_ADMIN")) {
+            yield MenuItem::linkToCrud('Add Employee', 'fa fa-plus', Employee::class)->setAction('new');
+        }
         yield MenuItem::section("Citizen");
         yield MenuItem::linkToCrud('Manage Citizen', 'fa fa-user', Citizen::class);
         yield MenuItem::linkToCrud('Add Citizen', 'fa fa-plus', Citizen::class)->setAction('new');

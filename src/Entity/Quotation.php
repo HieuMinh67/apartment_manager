@@ -40,6 +40,7 @@ class Quotation
 
     /**
      * @ORM\ManyToOne(targetEntity=Building::class, inversedBy="quotation")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $building;
 
@@ -56,7 +57,7 @@ class Quotation
     /**
      * @ORM\Column(type="boolean", options={"default": "0"})
      */
-    private $isArchived;
+    private $isArchived=false;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)

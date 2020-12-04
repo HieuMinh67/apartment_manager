@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -19,7 +20,6 @@ class EmployeeCrudController extends AbstractCrudController
     {
         return Employee::class;
     }
-
 
     public function configureCrud(Crud $crud): Crud
     {
@@ -37,18 +37,17 @@ class EmployeeCrudController extends AbstractCrudController
     {
         $imgFile = ImageField::new('thumbnailFile')->setFormType(VichImageType::class)->setLabel('Avatar');
         $imgName = ImageField::new('thumbnail')->setBasePath('/images/employee/')->setLabel('Avatar');
-        $fields = [
-            TextField::new('firstName'),
-            TextField::new('lastName'),
-//            ChoiceField::new('roles')->setChoices(['ADMIN' => ['ROLE_ADMIN'], 'MANAGER' => ['ROLE_MANAGER'], 'STAFF' => ['ROLE_STAFF']]),
-            TelephoneField::new('phone'),
-        ];
-        if ($pageName == Crud::PAGE_DETAIL | $pageName == Crud::PAGE_INDEX) {
-            $fields[] = $imgName;
-        } else {
-            $fields[] = $imgFile;
-            $fields[] = $imgName;
+        if ($pageName == Crud::PAGE_INDEX) {
+            yield IntegerField::new('id');
         }
-        return $fields;
+        yield TextField::new('firstName');
+        yield TextField::new('lastName');
+        yield TelephoneField::new('phone');
+        if ($pageName == Crud::PAGE_DETAIL | $pageName == Crud::PAGE_INDEX) {
+            yield EmailField::new('user.email')->setLabel('Email');
+            yield $imgName;
+        } else {
+            yield $imgFile;
+        }
     }
 }

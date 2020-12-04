@@ -33,11 +33,10 @@ class User implements UserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private $password='$argon2i$v=19$m=65536,t=4,p=1$ZUJjSThMLjB5RzhqSGQyOQ$O/qs5gTyuhEohuHFnukbm+pjox4ZvTQrF89GYfbdsdE';
 
     /**
      * @ORM\OneToOne(targetEntity=Employee::class, inversedBy="user", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
      */
     private $employee;
 
