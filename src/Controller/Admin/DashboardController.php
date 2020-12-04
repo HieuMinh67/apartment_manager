@@ -38,11 +38,7 @@ class DashboardController extends AbstractDashboardController
      */
     public function index(): Response
     {
-        $repository = $this->getDoctrine()->getRepository(User::class);
-        $user = $repository->findOneBy([
-            'email' => $this->getUser()->getUsername(),
-        ]);
-        if (!$user->getActive()) {
+        if (!$this->getUser()->getActive()) {
             $this->addFlash("fail", "Your account is disabled!");
             return $this->redirectToRoute("app_logout");
         }

@@ -152,4 +152,9 @@ class Apartment
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getId()."-".$this->getBuilding()->getName();
+    }
 }

@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
@@ -51,9 +52,15 @@ class UserCrudController extends AbstractCrudController
             yield IntegerField::new('id');
         }
         yield EmailField::new('email');
-        yield ChoiceField::new('roles')->setChoices(['Admin' => 'ROLE_ADMIN', 'Manager' => 'ROLE_MANAGER', 'Staff' => 'ROLE_STAFF'])->allowMultipleChoices();
+        $roleChoices = ['Manager' => 'ROLE_MANAGER', 'Staff' => 'ROLE_STAFF'];
+        if($this->isGranted('ROLE_ADMIN')) {
+            $roleChoices = array_merge($roleChoices, ['Admin' => 'ROLE_ADMIN']);
+        }
+        yield ChoiceField::new('roles')->setChoices($roleChoices)->allowMultipleChoices();
         if (Crud::PAGE_NEW != $pageName) {
             yield TelephoneField::new('employee.phone')->setLabel('Phone');
+        } elseif (Crud::PAGE_NEW == $pageName | Crud::PAGE_EDIT == $pageName) {
+            yield AssociationField::new('employee');
         }
         if (Crud::PAGE_INDEX == $pageName) {
             yield ImageField::new('employee.thumbnail')->setBasePath('/images/employee/')->setLabel('Avatar');

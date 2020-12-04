@@ -19,13 +19,26 @@ class UserFixtures extends Fixture
     {
         $this->encoder = $encoder;
     }
+
     public function load(ObjectManager $manager)
     {
-        $user = new User();
-        $user->setEmail("admin");
-        $user->setRoles(["ROLE_ADMIN"]);
-        $user->setPassword($this->encoder->encodePassword($user, 'admin'));
-        $manager->persist($user);
+        $roles = ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER', 'ROLE_STAFF', 'ROLE_STAFF', 'ROLE_STAFF'];
+        $firstName = ["Hieu", "Jake", "Noah", "James", "Jack", "Connor"];
+        $lastName = ["Pham", "John", "Harry", "Callum", "Mason", "Robert"];
+        $email = ["admin@novaland.com", 'manager1@novaland.com', 'manager2@novaland.com', 'staff1@novaland.com', 'staff2@novaland.com', 'staff3@novaland.com'];
+        for ($i = 0; $i < 6; $i++) {
+            $employee = new Employee();
+            $employee->setPhone("+84989190190");
+            $employee->setFirstName($firstName[$i]);
+            $employee->setLastName($lastName[$i]);
+            $user = new User();
+            $user->setEmail($email[$i]);
+            $user->setRoles([$roles[$i]]);
+            $user->setEmployee($employee);
+            $manager->persist($user);
+            $manager->persist($employee);
+            $manager->flus();
+        }
 
         $csv = fopen(dirname(__FILE__) . '/data.csv', 'r');
         $i = 0;

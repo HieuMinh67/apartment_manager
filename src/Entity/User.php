@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -33,17 +32,18 @@ class User implements UserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password='$argon2i$v=19$m=65536,t=4,p=1$ZUJjSThMLjB5RzhqSGQyOQ$O/qs5gTyuhEohuHFnukbm+pjox4ZvTQrF89GYfbdsdE';
+    private $password = '$argon2i$v=19$m=65536,t=4,p=1$ZUJjSThMLjB5RzhqSGQyOQ$O/qs5gTyuhEohuHFnukbm+pjox4ZvTQrF89GYfbdsdE';
 
     /**
      * @ORM\OneToOne(targetEntity=Employee::class, inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $employee;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $active=true;
+    private $active = true;
 
     public function getId(): ?int
     {
@@ -136,6 +136,7 @@ class User implements UserInterface
 
         return $this;
     }
+
     /**
      * @see UserInterface
      */
