@@ -68,12 +68,10 @@ class DashboardController extends AbstractDashboardController
             $quoteLabels[] = $labels[intval($i['month'])-1] . "-" . $i['year'];
             $quoteValues[] = intval($i['count']);
         }
-        $apartmantStatistic = $this->getDoctrine()->getRepository(Apartment::class)->getStatistic();
-//        dump($apartmantStatistic);
-//        exit();
+        $apartmentStatistic = $this->getDoctrine()->getRepository(Apartment::class)->getStatistic();
         $statisic = array(
-            "Sold apartments amount" => $apartmantStatistic['numberOf'],
-            "Total revenue" => $apartmantStatistic['revenue'],
+            "Sold apartments amount" => $apartmentStatistic['numberOf'],
+            "Total revenue" => $apartmentStatistic['revenue'],
             "Last month quotation" => $this->getDoctrine()->getRepository(Quotation::class)->getLastMonthQuote(),
         );
         return $this->render('bundles/EasyAdminBundle/page/dashboard.html.twig',
