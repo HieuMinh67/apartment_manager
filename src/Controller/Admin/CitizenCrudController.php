@@ -59,7 +59,7 @@ class CitizenCrudController extends AbstractCrudController
             TelephoneField::new('phone'),
             DateField::new('dateOfBirth'),
             ChoiceField::new('gender')->setChoices(Citizen::$genderChoices),
-            AssociationField::new('apartmentId')->autocomplete()->setLabel('Apartment ID'),
+            AssociationField::new('apartment')->autocomplete()->setLabel('Apartment ID'),
         ];
         if ($pageName == Crud::PAGE_INDEX || $pageName == Crud::PAGE_DETAIL) {
             $fields[] = $imgName;

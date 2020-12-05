@@ -59,6 +59,7 @@ class Employee implements \Serializable
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="employee", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
 
@@ -66,11 +67,6 @@ class Employee implements \Serializable
      * @ORM\OneToMany(targetEntity=Quotation::class, mappedBy="archiveBy")
      */
     private $quotations;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Timesheets::class, mappedBy="userId")
-     */
-    private $timesheets;
 
     public function __construct()
     {

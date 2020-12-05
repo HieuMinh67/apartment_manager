@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Employee;
 use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -60,7 +61,9 @@ class UserCrudController extends AbstractCrudController
         if (Crud::PAGE_NEW != $pageName) {
             yield TelephoneField::new('employee.phone')->setLabel('Phone');
         } elseif (Crud::PAGE_NEW == $pageName | Crud::PAGE_EDIT == $pageName) {
-            yield AssociationField::new('employee');
+            yield AssociationField::new('employee')->setFormTypeOptions([
+                "choices" => $this->getDoctrine()->getRepository(Employee::class)->getNullUserEmployee(),
+            ]);
         }
         if (Crud::PAGE_INDEX == $pageName) {
             yield ImageField::new('employee.thumbnail')->setBasePath('/images/employee/')->setLabel('Avatar');

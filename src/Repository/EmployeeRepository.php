@@ -47,6 +47,12 @@ class EmployeeRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getNullUserEmployee() {
+        return $this->createQueryBuilder('e')
+            ->where('e.user is NULL')
+            ->getQuery()->getResult();
+    }
+
     public function getLastYearEmployee() {
         $thisYear = date('Y-01-01');
         return $this->createQueryBuilder('e')

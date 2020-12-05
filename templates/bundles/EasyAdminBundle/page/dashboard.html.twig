@@ -17,7 +17,9 @@
                                              alt="{{ citizen.thumbnail }}"></td>
                                     <td>
                                         <h6 class="mb-1">{{ citizen.firstName }} {{ citizen.lastName }}</h6>
-                                        <p class="m-0">{{ citizen.apartmentId }}</p>
+                                        {% for a in citizen.apartment %}
+                                            <p class="m-0">{{ a }}</p>
+                                        {% endfor %}
                                     </td>
                                     <td>
                                         <h6 class="text-muted">

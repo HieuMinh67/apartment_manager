@@ -3,8 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\ApartmentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\False_;
 
 /**
  * @ORM\Entity(repositoryClass=ApartmentRepository::class)
@@ -29,11 +30,6 @@ class Apartment
     private $price;
 
     /**
-     * @ORM\OneToOne(targetEntity=Citizen::class, inversedBy="apartmentId", cascade={"persist", "remove"})
-     */
-    private $citizenId;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $status;
@@ -54,6 +50,11 @@ class Apartment
      */
     private $updateAt;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Citizen::class, mappedBy="apartment")
+     */
+    private $citizens;
+
     public function __construct()
     {
         $this->setUpdateAt(new \DateTime());
@@ -62,6 +63,7 @@ class Apartment
             $this->setCreateAt(new \DateTime());
             $this->setStatus(false);
         }
+        $this->citizens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -89,18 +91,6 @@ class Apartment
     public function setPrice(int $price): self
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getCitizenId(): ?Citizen
-    {
-        return $this->citizenId;
-    }
-
-    public function setCitizenId(?Citizen $citizenId): self
-    {
-        $this->citizenId = $citizenId;
 
         return $this;
     }
@@ -156,5 +146,33 @@ class Apartment
     public function __toString()
     {
         return $this->getId()."-".$this->getBuilding()->getName();
+    }
+
+    /**
+     * @return Collection|Citizen[]
+     */
+    public function getCitizens(): Collection
+    {
+        return $this->citizens;
+    }
+
+    public function addCitizen(Citizen $citizen): self
+    {
+        if (!$this->citizens->contains($citizen)) {
+            $this->citizens[] = $citizen;
+            $citizen->addApartment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCitizen(Citizen $citizen): self
+    {
+        if ($this->citizens->contains($citizen)) {
+            $this->citizens->removeElement($citizen);
+            $citizen->removeApartment($this);
+        }
+
+        return $this;
     }
 }

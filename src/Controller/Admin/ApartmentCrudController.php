@@ -46,7 +46,7 @@ class ApartmentCrudController extends AbstractCrudController
         $fields = [
             IntegerField::new('area'),
             MoneyField::new('price')->setCurrency('VND'),
-            AssociationField::new('citizenId')->autocomplete()->setLabel("Owner"),
+            AssociationField::new('citizens')->autocomplete()->setLabel("Owner"),
             AssociationField::new('building')->autocomplete(),
         ];
 

@@ -39,7 +39,16 @@ class UserFixtures extends Fixture
             $user->setEmail($email[$i]);
             $user->setRoles([$roles[$i]]);
             $user->setEmployee($employee);
+            $employee->setUser($user);
             $manager->persist($user);
+            $manager->persist($employee);
+        }
+        $randName = ["James", "Charlie", "James", "Charles", "William", "Damian", "Daniel", "Thomas"];
+        for ($o = 0; $o < 5; $o++) {
+            $employee = new Employee();
+            $employee->setPhone("+849".strval(rand(10000000,99999999)));
+            $employee->setFirstName(array_rand($randName,1));
+            $employee->setLastName(array_rand($randName,1));
             $manager->persist($employee);
         }
 
@@ -57,7 +66,13 @@ class UserFixtures extends Fixture
             $citizen[$i]->setPhone($line[0]);
             $citizen[$i]->setGender(array_rand($gender, 1));
             $citizen[$i]->setDateOfBirth(\DateTime::createFromFormat('Y-m-d', date('Y-m-d', $rand_time)));
-            $citizen[$i]->setApartmentId($apartments[array_rand($apartments, 1)]);
+            $randIndexApart = array_rand($apartments, 1);
+            $randApartment = $apartments[$randIndexApart];
+            $randApartment->setStatus(true);
+            $citizen[$i]->addApartment($randApartment);
+            if (!$citizen[$i]->getApartment()) {
+                dump([$randApartment, $randIndexApart]);
+            }
             $manager->persist($citizen[$i]);
 
             $this->addReference("new Citizen-" . $i, $citizen[$i]);

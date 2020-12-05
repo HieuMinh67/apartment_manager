@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CitizenRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -48,11 +50,6 @@ class Citizen
     private $gender;
 
     /**
-     * @ORM\OneToOne(targetEntity=Apartment::class, mappedBy="citizenId", cascade={"persist", "remove"})
-     */
-    private $apartmentId;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $email;
@@ -79,6 +76,11 @@ class Citizen
      */
     private $updateAt;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Apartment::class, inversedBy="citizens")
+     */
+    private $apartment;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +92,7 @@ class Citizen
         if ($this->createAt === null) {
             $this->createAt = new \DateTime();
         }
+        $this->apartment = new ArrayCollection();
     }
 
     /**
@@ -188,24 +191,6 @@ class Citizen
         return $this;
     }
 
-    public function getApartmentId(): ?Apartment
-    {
-        return $this->apartmentId;
-    }
-
-    public function setApartmentId(?Apartment $apartmentId): self
-    {
-        $this->apartmentId = $apartmentId;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newCitizenId = null === $apartmentId ? null : $this;
-        if ($apartmentId->getCitizenId() !== $newCitizenId) {
-            $apartmentId->setCitizenId($newCitizenId);
-        }
-
-        return $this;
-    }
-
     public function __toString() {
         return $this->getFirstName().' '.$this->getLastName(). ' - ' .$this->getPhone();
     }
@@ -242,6 +227,32 @@ class Citizen
     public function setUpdateAt(\DateTimeInterface $updateAt): self
     {
         $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Apartment[]
+     */
+    public function getApartment(): Collection
+    {
+        return $this->apartment;
+    }
+
+    public function addApartment(Apartment $apartment): self
+    {
+        if (!$this->apartment->contains($apartment)) {
+            $this->apartment[] = $apartment;
+        }
+
+        return $this;
+    }
+
+    public function removeApartment(Apartment $apartment): self
+    {
+        if ($this->apartment->contains($apartment)) {
+            $this->apartment->removeElement($apartment);
+        }
 
         return $this;
     }

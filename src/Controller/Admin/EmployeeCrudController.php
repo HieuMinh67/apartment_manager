@@ -30,7 +30,8 @@ class EmployeeCrudController extends AbstractCrudController
     {
         return $actions->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT, Action::DELETE])
-            ->setPermissions([Action::NEW => 'ROLE_ADMIN', Action::EDIT, 'ROLE_ADMIN', Action::DELETE, 'ROLE_ADMIN']);
+            ->setPermissions([Action::NEW => 'ROLE_ADMIN', Action::EDIT, 'ROLE_ADMIN', Action::DELETE, 'ROLE_ADMIN'])
+            ->setPermission(Action::NEW, 'ROLE_MANAGER');
     }
 
     public function configureFields(string $pageName): iterable
