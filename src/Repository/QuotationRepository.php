@@ -48,6 +48,13 @@ class QuotationRepository extends ServiceEntityRepository
     }
     */
 
+    public function getLastMonthQuote() {
+        return $this->createQueryBuilder('q')
+            ->select('count(q.id) as count')
+            ->getQuery()
+            ->getSingleResult()['count'];
+    }
+
     public function getQuoteData() {
         return $this->createQueryBuilder('q')
             ->select('count(q.id) as count, MONTH(q.createAt) as month, YEAR(q.createAt) as year')

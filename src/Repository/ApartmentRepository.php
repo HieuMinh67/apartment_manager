@@ -19,32 +19,10 @@ class ApartmentRepository extends ServiceEntityRepository
         parent::__construct($registry, Apartment::class);
     }
 
-    // /**
-    //  * @return Apartment[] Returns an array of Apartment objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
+    public function getStatistic() {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+            ->select('count(a.id) as numberOf, sum(a.price) as revenue')
+            ->where('a.status = 1')
+            ->getQuery()->getSingleResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Apartment
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

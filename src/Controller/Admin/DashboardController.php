@@ -68,14 +68,21 @@ class DashboardController extends AbstractDashboardController
             $quoteLabels[] = $labels[intval($i['month'])-1] . "-" . $i['year'];
             $quoteValues[] = intval($i['count']);
         }
-        $apartmantRepo = $this->getDoctrine()->getRepository(Apartment::class);
-//        $statisic = array(
-//            "Sold apartments amount" => $apartmantRepo->getNumberOfSold(),
-//            "Total revenue" => $apartmantRepo->getTotalRevenue(),
-//            "Number of quotes last quarter" => $this->getDoctrine()->getRepository(Quotation::class)->getLastQuarterInfo(),
-//        );
+        $apartmantStatistic = $this->getDoctrine()->getRepository(Apartment::class)->getStatistic();
+//        dump($apartmantStatistic);
+//        exit();
+        $statisic = array(
+            "Sold apartments amount" => $apartmantStatistic['numberOf'],
+            "Total revenue" => $apartmantStatistic['revenue'],
+            "Last month quotation" => $this->getDoctrine()->getRepository(Quotation::class)->getLastMonthQuote(),
+        );
         return $this->render('bundles/EasyAdminBundle/page/dashboard.html.twig',
-            ['getRecentBirthDay' => $citizen, 'citizenData' => $citizenData, 'quoteLabels' => $quoteLabels, 'quoteValues' => $quoteValues]);
+            ['getRecentBirthDay' => $citizen,
+                'citizenData' => $citizenData,
+                'quoteLabels' => $quoteLabels,
+                'quoteValues' => $quoteValues,
+                'statistic' => $statisic,
+            ]);
     }
 
     /**

@@ -1,4 +1,7 @@
 {% extends '@!EasyAdmin/page/content.html.twig' %}
+{% block page_title %}
+Dashboard
+{% endblock %}
 {% block page_content %}
     <div class="row">
         <div class="col-md-12 col-xl-6">
@@ -8,12 +11,12 @@
                 </div>
                 <div class="card-block">
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-hover mb-0">
                             <tbody>
                             {% for  citizen in getRecentBirthDay %}
                                 <tr class="unread">
                                     <td><img class="rounded-circle" style="width:40px;"
-                                             src="{% if (vich_uploader_asset(citizen, 'thumbnailFile')) %}{{ vich_uploader_asset(citizen, 'thumbnailFile') }}{% else %}{{ asset('img/user/avatar-2.jpg') }}{% endif %}"
+                                             src="{% if (vich_uploader_asset(citizen, 'thumbnailFile')) %}{{ vich_uploader_asset(citizen, 'thumbnailFile') }}{% elseif citizen.gender == 1 %}{{ asset('img/user/avatar-2.jpg') }}{% else %}{{ asset('img/user/avatar-5.jpg') }}{% endif %}"
                                              alt="{{ citizen.thumbnail }}"></td>
                                     <td>
                                         <h6 class="mb-1">{{ citizen.firstName }} {{ citizen.lastName }}</h6>
@@ -46,23 +49,23 @@
                 </div>
                 <div class="card-block">
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-hover mb-0">
                             <tbody>
-                            {% for  citizen in getRecentBirthDay %}
+                            {% for  name, number in statistic %}
                                 <tr class="unread">
-                                    <td><img class="rounded-circle" style="width:40px;"
-                                             src="{% if (vich_uploader_asset(citizen, 'thumbnailFile')) %}{{ vich_uploader_asset(citizen, 'thumbnailFile') }}{% else %}{{ asset('img/user/avatar-2.jpg') }}{% endif %}"
-                                             alt="{{ citizen.thumbnail }}">
-                                    </td>
+{#                                    <td><img class="rounded-circle" style="width:40px;"#}
+{#                                             alt="{{ citizen.thumbnail }}">#}
+{#                                    </td>#}
                                     <td>
-                                        <h6 class="mb-1">{{ citizen.firstName }} {{ citizen.lastName }}</h6>
-                                        {% for a in citizen.apartment %}
-                                            <p class="m-0">{{ a }}</p>
-                                        {% endfor %}
+                                        <h6 class="mb-1">{{ name }}</h6>
                                     </td>
                                     <td>
                                         <h6 class="text-muted">
-                                            {{ citizen.dateOfBirth|date("F jS") }}
+                                            {% if name == 'Total revenue' %}
+                                                {{ number|number_format(0, '.', ',') }} VND
+                                            {% else %}
+                                            {{ number }}
+                                            {% endif %}
                                         </h6>
                                     </td>
                                 </tr>
