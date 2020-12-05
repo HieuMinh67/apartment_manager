@@ -22,11 +22,18 @@ class BuildingFixtures extends Fixture implements FixtureGroupInterface
     public function load(ObjectManager $manager)
     {
         $name = ["Jake", "Noah", "James", "Jack", "Connor", "Liam", "John", "Harry", "Callum", "Mason", "Robert", "Jacob", "Michael", "Charlie", "Kyle", "William", "Thomas", "Joe", "Ethan", "David", "George", "Reece", "Michael", "Richard", "Oscar", "Rhys", "Alexander", "Joseph", "James", "Charlie", "James", "Charles", "William", "Damian", "Daniel", "Thomas"];
-        for ($i = 0; $i < 5; $i++) {
+        $building = array(
+            "THE SUN AVENUE" => "5 Đại lộ Mai Chí Thọ, P . An Phú, Q.2",
+            "Sunrise Cityview" => "19 Nguyễn Hữu Thọ, Quận 7",
+            "RichStar" => "1 Hòa Bình, Quận Tân Phú",
+            "Saigon Royal Residence" => "34 – 35 Bến Vân Đồn, P.12, Q.4",
+            "Newton Residence" => "50 Nguyễn Văn Trỗi, P.13, Q. Tân Bình",
+        );
+        foreach ($building as $name => $address) {
             $building = new Building();
-            $building->setName("THE SUN AVENUE" . $i);
+            $building->setName($name);
             $building->setNumberOfAppartment(rand(100, 150));
-            $building->setAddress($i . " Đại lộ Mai Chí Thọ, P . An Phú, Q.2");
+            $building->setAddress($address);
             $manager->persist($building);
             for ($k = 0; $k < $building->getNumberOfAppartment(); $k++) {
                 $apartment = new Apartment();
