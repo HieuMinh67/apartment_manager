@@ -52,11 +52,10 @@ class CitizenRepository extends ServiceEntityRepository
 
     public function getRecentBirthDay() {
         return $this->createQueryBuilder('c')
-            ->orderBy('c.dateOfBirth', 'ASC')
+            ->orderBy('MONTH(c.dateOfBirth)', 'ASC')
+            ->addOrderBy('DATE(c.dateOfBirth)', 'ASC')
             ->setMaxResults(5)
-            ->getQuery()
-            ->getResult()
-            ;
+            ->getQuery()->getResult();
     }
 
     public function countCitizen(): int {

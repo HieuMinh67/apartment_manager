@@ -192,7 +192,7 @@ class Citizen
     }
 
     public function __toString() {
-        return $this->getFirstName().' '.$this->getLastName(). ' - ' .$this->getPhone();
+        return $this->getFirstName().' '.$this->getLastName();
     }
 
     public function getEmail(): ?string

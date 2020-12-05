@@ -47,8 +47,8 @@ class UserFixtures extends Fixture
         for ($o = 0; $o < 5; $o++) {
             $employee = new Employee();
             $employee->setPhone("+849".strval(rand(10000000,99999999)));
-            $employee->setFirstName(array_rand($randName,1));
-            $employee->setLastName(array_rand($randName,1));
+            $employee->setFirstName($randName[array_rand($randName,1)]);
+            $employee->setLastName($randName[array_rand($randName,1)]);
             $manager->persist($employee);
         }
 

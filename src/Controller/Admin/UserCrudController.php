@@ -63,6 +63,7 @@ class UserCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_NEW == $pageName | Crud::PAGE_EDIT == $pageName) {
             yield AssociationField::new('employee')->setFormTypeOptions([
                 "choices" => $this->getDoctrine()->getRepository(Employee::class)->getNullUserEmployee(),
+                "required" => true,
             ]);
         }
         if (Crud::PAGE_INDEX == $pageName) {

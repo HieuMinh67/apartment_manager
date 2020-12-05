@@ -68,6 +68,12 @@ class DashboardController extends AbstractDashboardController
             $quoteLabels[] = $labels[intval($i['month'])-1] . "-" . $i['year'];
             $quoteValues[] = intval($i['count']);
         }
+        $apartmantRepo = $this->getDoctrine()->getRepository(Apartment::class);
+//        $statisic = array(
+//            "Sold apartments amount" => $apartmantRepo->getNumberOfSold(),
+//            "Total revenue" => $apartmantRepo->getTotalRevenue(),
+//            "Number of quotes last quarter" => $this->getDoctrine()->getRepository(Quotation::class)->getLastQuarterInfo(),
+//        );
         return $this->render('bundles/EasyAdminBundle/page/dashboard.html.twig',
             ['getRecentBirthDay' => $citizen, 'citizenData' => $citizenData, 'quoteLabels' => $quoteLabels, 'quoteValues' => $quoteValues]);
     }
@@ -92,21 +98,21 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setTitle('<img class="w-25" src="images/long_logo.png">')
-            ->setFaviconPath('<img class="w-25" src="images/long_logo.png">');
-//            ->setFaviconPath('images/favicon.png');
+//            ->setFaviconPath('<img class="w-25" src="images/long_logo.png">');
+            ->setFaviconPath('images/favicon.png');
     }
 
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-file-text');
-        if ($this->isGranted("ROLE_ADMIN") | $this->isGranted("ROLE_MANAGER")) {
+        if (!$this->isGranted("ROLE_STAFF")) {
             yield MenuItem::section("User");
             yield MenuItem::linkToCrud('Manage User', 'fa fa-user', User::class);
             yield MenuItem::linkToCrud('Add User', 'fa fa-plus', User::class)->setAction('new');
         }
         yield MenuItem::section("Employee");
         yield MenuItem::linkToCrud('Manage Employee', 'fa fa-user', Employee::class);
-        if ($this->isGranted("ROLE_ADMIN")) {
+        if (!$this->isGranted("ROLE_STAFF")) {
             yield MenuItem::linkToCrud('Add Employee', 'fa fa-plus', Employee::class)->setAction('new');
         }
         yield MenuItem::section("Citizen");

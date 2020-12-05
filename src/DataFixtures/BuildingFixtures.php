@@ -21,10 +21,10 @@ class BuildingFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager)
     {
-        $name = ["Jake", "Noah", "James", "Jack", "Connor", "Liam", "John", "Harry", "Callum", "Mason", "Robert", "Jacob", "Michael", "Charlie", "Kyle", "William", "Thomas", "Joe", "Ethan", "David", "George", "Reece", "Michael", "Richard", "Oscar", "Rhys", "Alexander", "Joseph", "James", "Charlie", "James", "Charles", "William", "Damian", "Daniel", "Thomas"];
+        $names = ["Jake", "Noah", "James", "Jack", "Connor", "Liam", "John", "Harry", "Callum", "Mason", "Robert", "Jacob", "Michael", "Charlie", "Kyle", "William", "Thomas", "Joe", "Ethan", "David", "George", "Reece", "Michael", "Richard", "Oscar", "Rhys", "Alexander", "Joseph", "James", "Charlie", "James", "Charles", "William", "Damian", "Daniel", "Thomas"];
         $building = array(
-            "THE SUN AVENUE" => "5 Đại lộ Mai Chí Thọ, P . An Phú, Q.2",
-            "Sunrise Cityview" => "19 Nguyễn Hữu Thọ, Quận 7",
+            "The Sun Avenue" => "5 Đại lộ Mai Chí Thọ, P . An Phú, Q.2",
+            "Sunrise City" => "19 Nguyễn Hữu Thọ, Quận 7",
             "RichStar" => "1 Hòa Bình, Quận Tân Phú",
             "Saigon Royal Residence" => "34 – 35 Bến Vân Đồn, P.12, Q.4",
             "Newton Residence" => "50 Nguyễn Văn Trỗi, P.13, Q. Tân Bình",
@@ -45,10 +45,10 @@ class BuildingFixtures extends Fixture implements FixtureGroupInterface
             }
             for ($j = 0; $j < 20; $j++) {
                 $quote = new Quotation();
-                $genName = array_rand($name, 2);
-                $quote->setName($name[$genName[0]]. " " .$name[$genName[1]]);
+                $genName = array_rand($names, 2);
+                $quote->setName($names[$genName[0]]. " " .$names[$genName[1]]);
                 $quote->setPhone("0".strval(rand(10000000,99999999)));
-                $quote->setEmail(strtolower($name[$genName[0]].$name[$genName[1]].strval(rand(10000,99999)).'@gmail.com'));
+                $quote->setEmail(strtolower($names[$genName[0]].$names[$genName[1]].strval(rand(10000,99999)).'@gmail.com'));
                 $quote->setMessage(file_get_contents('http://loripsum.net/api/1/medium/plaintext'));
                 $quote->setBuilding($building);
                 $quote->setCreateAt(\DateTime::createFromFormat('Y-m-d', date('Y-m-d', rand(strtotime('yesterday'), strtotime('last year')))));
