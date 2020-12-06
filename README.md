@@ -1,4 +1,5 @@
 # apartment_manager
+This is a student project. Own project uses Symfony framework to build this project
 
 ## System requirements
 * PHP >= 7.2
