@@ -19,37 +19,9 @@ class CitizenRepository extends ServiceEntityRepository
         parent::__construct($registry, Citizen::class);
     }
 
-
-
-    // /**
-    //  * @return Citizen[] Returns an array of Citizen objects
-    //  */
     /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Citizen
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
+     * Get 5 Citizen has upcoming birthday
+     */
     public function getRecentBirthDay() {
         return $this->createQueryBuilder('c')
             ->orderBy('MONTH(c.dateOfBirth)', 'ASC')
@@ -58,6 +30,9 @@ class CitizenRepository extends ServiceEntityRepository
             ->getQuery()->getResult();
     }
 
+    /*
+     * Get number of all citizen
+     */
     public function countCitizen(): int {
         return $this->createQueryBuilder("c")
             ->select('count(c) as count')
