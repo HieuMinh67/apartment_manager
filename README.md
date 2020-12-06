@@ -1,12 +1,12 @@
-## apartment_manager
+# apartment_manager
 
-# System requirements
+## System requirements
 * PHP >= 7.2
 * MySQL >= 5.0
 * Composer
 * Symfony CLI
 
-# Run applications
+## Run applications
 composer install\
 php bin/console d:database:create\
 php bin/console d:s:u -f\
