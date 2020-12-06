@@ -70,7 +70,7 @@ class QuotationCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $fields = array(
-            IntegerField::new('id'),
+            IntegerField::new('id')->hideOnForm(),
             TextField::new('name'),
             DateTimeField::new('createAt')
         );
