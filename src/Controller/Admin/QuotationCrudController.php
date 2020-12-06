@@ -45,8 +45,6 @@ class QuotationCrudController extends AbstractCrudController
         $quotation = $context->getEntity()->getInstance();
         $quotation->setIsArchived(true);
         $quotation->setArchiveAt(new \DateTime('now'));
-        dump($this->getUser()->getEmployee());
-        exit();
         $quotation->setArchiveBy($this->getUser()->getEmployee()->addQuotation($quotation));
         $this->getDoctrine()->getManager()->flush();
         $routeBuilder = $this->get(CrudUrlGenerator::class)->build()
